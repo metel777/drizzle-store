@@ -1,11 +1,8 @@
 import { fetchAll } from "@/actions/products"
 import ProductCard from "@/components/reusable/main-page-product-card"
 
-
 export default async function EditAllProductsPage() {
-
-const data = await fetchAll()
-
+  const data = await fetchAll()
   return (
     <main>
       <h1 className="text-2xl font-bold text-neutral-950 ">Shop</h1>

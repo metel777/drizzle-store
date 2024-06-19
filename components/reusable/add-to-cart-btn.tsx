@@ -1,27 +1,21 @@
-"use client"
+import { addToCart } from "@/actions/cart"
+import { Button } from "@/components/ui/button"
+import { verifyAuthSession } from "@/lib/auth"
 
-import { toast } from "sonner"
-import { Button } from "../ui/button"
-import { db } from "@/lib/database";
-import { customer_orders } from "@/database/schema";
-// import { addToCart } from "@/actions/cart"
+type Props = { id: any }
+export default async function AddToCartBtn({ id }: Props) {
+  const { user } = await verifyAuthSession()
 
-type Props = { id: number; userId: any }
-export default function AddToCartBtn({ id, userId }: Props) {
-  async function handleClick() {
-    toast("Item has been added to the cart.", {
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo"),
-      },
-    })
-    await db.insert(customer_orders).values({ userId, productId: id })
+  async function handleAddToCart() {
+    "use server"
+    addToCart(user?.id, id)
   }
+
   return (
-    <main>
-      <Button variant="outline" onClick={handleClick}>
-        Add to cart
+    <form action={handleAddToCart}>
+      <Button size="sm" type="submit" variant="primary">
+        Add to Card
       </Button>
-    </main>
+    </form>
   )
 }

@@ -12,9 +12,9 @@ export default async function Header() {
           <Link className="hover:underline" href="/">
             Shop
           </Link>
-          <Link className="hover:underline" href="/cart">
+          <a className="hover:underline" href="/cart">
             Cart
-          </Link>
+          </a>
           <Link className="hover:underline" href="/checkout">
             Checkout
           </Link>
@@ -24,6 +24,11 @@ export default async function Header() {
           <Link className="hover:underline" href="/admin/add-product">
             Add product
           </Link>
+          <form action="/api/insert-values" method="post">
+            <Button type="submit" className="h-min" size="sm">
+              Insert default values
+            </Button>
+          </form>
         </section>
         <section className="flex gap-2">
           {!isSignedIn.user ? (

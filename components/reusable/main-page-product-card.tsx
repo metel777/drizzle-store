@@ -2,7 +2,6 @@
 import Link from "next/link"
 import { Button } from "../ui/button"
 import AddToCartBtn from "./add-to-cart-btn"
-import { addToCart } from "@/actions/cart"
 
 type Props = {
   title: string
@@ -21,11 +20,7 @@ export default async function ProductCard({
   editing,
 }: Props) {
 
-async function handleAddToCart() {
-  'use server'
 
-  addToCart(1, id)
-}
 
   return (
     <main className="bg-white  p-2 rounded-sm grid grid-rows-2 gap-2 text-center">
@@ -52,17 +47,12 @@ async function handleAddToCart() {
           ) : (
             <section className="flex justify-between">
               <Link href={`/product/${id}`}>
-                <Button type="submit" variant="outline">
+                <Button size='sm' type="submit" variant="outline">
                   Details
                 </Button>
               </Link>
               {/* <AddToCartBtn id={id} /> */}
-              <form action={handleAddToCart}>
-                <Button type="submit" variant="primary">
-                  Add to Card
-                </Button>
-                <input type="hidden" name="productId" value={id} />
-              </form>
+              <AddToCartBtn id={id} />
             </section>
           )}
         </section>

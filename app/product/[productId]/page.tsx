@@ -1,4 +1,5 @@
 import { getProductById } from "@/actions/products"
+import AddToCartBtn from "@/components/reusable/add-to-cart-btn"
 import { H1, H2 } from "@/components/reusable/titles"
 import { Button } from "@/components/ui/button"
 
@@ -14,7 +15,7 @@ export default async function ProductsPage({ params }: params) {
   const data = res[0]
 
   return (
-    <main>
+    <main className="h-screen">
       <header className="bg-white ">
         {data && (
           <section className="grid grid-cols-2 gap-4">
@@ -24,7 +25,7 @@ export default async function ProductsPage({ params }: params) {
               <p>{data.description}</p>
               <div className="flex gap-5 mt-3">
                 <H2>$ {data.price}</H2>
-                <Button variant="primary">Add to cart</Button>
+                <AddToCartBtn id={data.id} />
               </div>
             </div>
           </section>

@@ -8,5 +8,5 @@ export default async function layout({ children }: C) {
   if (!result.user) {
     return <H1>Sorry but you dont have acces to this page.</H1>
   }
-  return {children}
+  return <>{children}</>
 }
