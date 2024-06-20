@@ -1,3 +1,5 @@
+'use server'
+
 import { verifyAuthSession } from "@/lib/auth";
 import { db } from "@/database/database";
 import { customer_orders, products } from "@/database/schema";

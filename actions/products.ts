@@ -1,6 +1,7 @@
 import { db } from "@/database/database";
-import { products } from "@/database/schema";
-import { desc, eq } from "drizzle-orm";
+import { customer_orders, products } from "@/database/schema";
+import { verifyAuthSession } from "@/lib/auth";
+import { desc, eq, sql } from "drizzle-orm";
 
 type Product = {
     title: string
@@ -10,15 +11,26 @@ type Product = {
     id?: any
 }
 
+// export function fetchAll({ paramsPage }: { paramsPage: string }) {
 export function fetchAll() {
-    return db.select().from(products).orderBy(desc(products.createdAt))
+
+    return db
+        .select()
+        .from(products)
+        .orderBy(desc(products.createdAt))
 }
+
 export function getProductById(id: any) {
-    return db.select().from(products).where(eq(products.id, id))
+    return db
+        .select()
+        .from(products)
+        .where(eq(products.id, id))
 }
 
 export async function addProduct({ title, imageUrl, price, description }: Product) {
-    await db.insert(products).values({ title, imageUrl, price, description, createdAt: new Date, updatedAt: new Date })
+    await db
+        .insert(products)
+        .values({ title, imageUrl, price, description, createdAt: new Date, updatedAt: new Date })
 }
 
 export async function updateProduct({ id, title, imageUrl, price, description }: Product) {
@@ -27,6 +39,19 @@ export async function updateProduct({ id, title, imageUrl, price, description }:
 
 export async function deleteProduct(id: any) {
     await db.delete(products).where(eq(products.id, id))
+}
+
+export async function getTotalPrice() {
+
+    const { user } = await verifyAuthSession()
+    const res = await db.execute(sql`
+        SELECT SUM(${products.price} * ${customer_orders.quantity}) AS total_price
+        FROM ${customer_orders} 
+        JOIN ${products} ON ${customer_orders.productId} = ${products.id}
+        WHERE ${customer_orders.userId} = ${user?.id};
+        `)
+    return res[0]
+
 }
 
 export async function insertDefaultValues() {

@@ -9,7 +9,8 @@ import { MaisonNeue } from "@/public/Maison Neue 3.002 cyr/MaisonNeue"
 
 import { C } from "@/types/child"
 import NextTopLoader from "nextjs-toploader"
-import { Toaster } from "sonner"
+import { Toaster } from "@/components/ui/toaster"
+
 
 
 export const metadata = {
@@ -23,10 +24,10 @@ export default async function RootLayout({ children }: C) {
       <body className={`${Suisse.className} bg-bgPrimary text-text-weak`}>
         <NextTopLoader color="#84cc16" height={4} />
         <Header />
+        <Toaster/>
         <main className="h-screen max-w-[1200px] mx-auto pt-20">
           {children}
         </main>
-        <Toaster/>
       </body>
     </html>
   )

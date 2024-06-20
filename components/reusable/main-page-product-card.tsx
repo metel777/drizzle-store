@@ -23,14 +23,14 @@ export default async function ProductCard({
 
 
   return (
-    <main className="bg-white  p-2 rounded-sm grid grid-rows-2 gap-2 text-center">
+    <main className="bg-white p-2 rounded-sm grid grid-rows-2 gap-2 text-center">
       <header>
         <h3 className="text-xl text-neutral-950 font-medium">{title}</h3>
         <img className="w-full max-h-[120px]" src={imageUrl} alt="" />
       </header>
       <section>
         <h3 className="text-xl text-neutral-950">$ {price}</h3>
-        <p className="text-sm line-clamp-4">{description}</p>
+        <p className="text-sm line-clamp-4  bg-white">{description}</p>
         <section className="mt-5">
           {editing ? (
             <main className="flex justify-between">

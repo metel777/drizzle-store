@@ -25,8 +25,8 @@ const config = {
         brand: colors.lime[600],
         "text-strong": colors.neutral[950],
         "text-weak": colors.neutral[700],
-        "stroke-strong": colors.lime[600],
-        "stroke-weak": colors.lime[600],
+        "stroke-strong": colors.neutral[300],
+        "stroke-weak": colors.neutral[200],
         fill: 'white',
         bgPrimary: colors.gray[100],
 

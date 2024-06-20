@@ -14,7 +14,7 @@ const buttonVariants = cva(
         'primary-black':
           "bg-gradient-to-t from-neutral-800/90 to-neutral-800 text-neutral-400 hover:text-neutral-100 shadow-glance border border-neutral-900 active:ring-2 ring-lime-600",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-red-500 border shadow-glance border-red-600 text-red-50  hover:bg-red-500/80",
         outline:
           "border border-neutral-200 bg-transparent  hover:bg-neutral-200 hover:border-transparent",
         ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -22,7 +22,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-10 px-5 py-2",
-        sm: "h-9 rounded-md px-3",
+        sm: "h-10 px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
       },
