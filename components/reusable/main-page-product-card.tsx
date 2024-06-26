@@ -1,4 +1,3 @@
-
 import Link from "next/link"
 import { Button } from "../ui/button"
 import AddToCartBtn from "./add-to-cart-btn"
@@ -19,18 +18,16 @@ export default async function ProductCard({
   description,
   editing,
 }: Props) {
-
-
-
   return (
-    <main className="bg-white p-2 rounded-sm grid grid-rows-2 gap-2 text-center">
+    <main className="bg-white p-2 rounded-sm grid grid-rows-2 gap-2">
       <header>
-        <h3 className="text-xl text-neutral-950 font-medium">{title}</h3>
+        <h3 className="text-xl font-bold text-text-strong">{title}</h3>
         <img className="w-full max-h-[120px]" src={imageUrl} alt="" />
       </header>
       <section>
-        <h3 className="text-xl text-neutral-950">$ {price}</h3>
-        <p className="text-sm line-clamp-4  bg-white">{description}</p>
+        <h3 className="text-xl font-bold text-text-strong">$ {price}</h3>
+        <p className="text-[15px] line-clamp-4  bg-white">{description}</p>
+
         <section className="mt-5">
           {editing ? (
             <main className="flex justify-between">
@@ -47,7 +44,7 @@ export default async function ProductCard({
           ) : (
             <section className="flex justify-between">
               <Link href={`/product/${id}`}>
-                <Button size='sm' type="submit" variant="outline">
+                <Button size="sm" type="submit" variant="outline">
                   Details
                 </Button>
               </Link>

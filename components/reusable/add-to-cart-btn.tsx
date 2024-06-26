@@ -1,6 +1,7 @@
 import { addToCart } from "@/actions/cart"
 import { Button } from "@/components/ui/button"
 import { verifyAuthSession } from "@/lib/auth"
+import { toast } from "@/components/ui/use-toast"
 
 type Props = { id: any }
 export default async function AddToCartBtn({ id }: Props) {

@@ -30,7 +30,8 @@ export async function signup(prevState: formMessages, formData: FormData) {
     if (password !== CPassword) {
         errors.password = 'Passwords doesnt match.'
     }
-    if(errors.email && errors.password){
+
+    if (errors.email && errors.password) {
         return prevState
     }
 

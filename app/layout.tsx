@@ -1,17 +1,19 @@
 import "./globals.css"
 import Header from "@/components/Header"
+
 import { Suisse } from "@/public/Suisse/Suisse"
 import { Aeonik } from "@/public/Aeonik cyr/Aeonik"
 import { EuclidCircularA } from "@/public/Euclid Circular cyr/Euclid-Circular"
 import { MaisonNeue } from "@/public/Maison Neue 3.002 cyr/MaisonNeue"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
+import { Inter } from "next/font/google"
 
-
-
-import { C } from "@/types/child"
+import { C } from "@/types/react-child"
 import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
 
-
+const inter = Inter({ subsets: ["latin"], weight: ["500", "600"] })
 
 export const metadata = {
   title: "Create Next App",
@@ -21,10 +23,13 @@ export const metadata = {
 export default async function RootLayout({ children }: C) {
   return (
     <html lang="en">
-      <body className={`${Suisse.className} bg-bgPrimary text-text-weak`}>
+      <body
+        className={`${Suisse.className} bg-bgPrimary text-text-weak subpixel-antialiased overflow-x-hidden`}
+      >
+        <div className="logo_mark"></div>
         <NextTopLoader color="#84cc16" height={4} />
         <Header />
-        <Toaster/>
+        <Toaster />
         <main className="h-screen max-w-[1200px] mx-auto pt-20">
           {children}
         </main>

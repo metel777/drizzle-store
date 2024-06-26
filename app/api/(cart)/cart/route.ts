@@ -14,6 +14,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     try {
         if (user) {
             await addToCart(user.id, productId)
+            revalidatePath('/cart')
             redirect('/')
         }
     } catch (error: any) {

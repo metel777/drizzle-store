@@ -20,11 +20,12 @@ const config = {
     extend: {
       boxShadow: {
         glance: "inset 0 1px rgba(255, 255, 255, 0.4)",
+        taobao: "0 6px 48px 0 rgba(0, 17, 51, .06)"
       },
       colors: {
         brand: colors.lime[600],
-        "text-strong": colors.neutral[950],
-        "text-weak": colors.neutral[700],
+        "text-strong": colors.neutral[900],
+        "text-weak": colors.neutral[600],
         "stroke-strong": colors.neutral[300],
         "stroke-weak": colors.neutral[200],
         fill: 'white',

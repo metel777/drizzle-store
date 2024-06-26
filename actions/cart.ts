@@ -4,9 +4,11 @@ import { verifyAuthSession } from "@/lib/auth";
 import { db } from "@/database/database";
 import { customer_orders, products } from "@/database/schema";
 import { and, eq, inArray, sql } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_cache } from "next/cache";
 
-export async function getCart() {
+export const getCart = async () => {
+
+    // auth verification 
     const { session } = await verifyAuthSession();
     const userId = Number(session?.userId);
 
@@ -32,9 +34,6 @@ export async function getCart() {
                 quantity: quantityInfo?.quantity
             };
         });
-
-
-
         return cartItems;
     }
 
@@ -43,8 +42,16 @@ export async function getCart() {
 }
 
 export async function addToCart(userId: any, productId: any) {
+    revalidatePath('/cart')
+    
     // check if cart exists on user 
-    const res = await db.select().from(customer_orders).where(and(eq(customer_orders.userId, userId), eq(customer_orders.productId, productId)))
+    const res = await db
+        .select()
+        .from(customer_orders)
+        .where(and(
+            eq(customer_orders.userId, userId),
+            eq(customer_orders.productId, productId)
+        ))
 
     if (res.length > 0) {
         // if product already exists - increase quantity
@@ -59,10 +66,16 @@ export async function addToCart(userId: any, productId: any) {
     else {
         await db.insert(customer_orders).values({ userId, productId, quantity: 1 })
     }
+
     
     console.log('::::::::: Succed. added new item to cart ::::::::')
 }
 
 export async function deleteFromCart(productId: any, userId: any) {
-    await db.delete(customer_orders).where(and(eq(customer_orders.userId, userId ), eq(customer_orders.productId, productId)))
+    await db
+        .delete(customer_orders)
+        .where(and(
+            eq(customer_orders.userId, userId),
+            eq(customer_orders.productId, productId)
+        ))
 }

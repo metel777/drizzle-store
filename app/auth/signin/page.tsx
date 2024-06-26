@@ -10,10 +10,9 @@ import { toast } from "@/components/ui/use-toast"
 import { Label } from "@/components/ui/label"
 
 export default function SignIn() {
-  const initialState = {
-    errors: { email: "", password: "" },
-    
-  } as formMessages
+  const initialState: formMessages = {
+    errors: { email: "", password: ""},
+  }
 
   const [formState, formAction] = useFormState(signin, initialState)
 
