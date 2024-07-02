@@ -12,7 +12,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <main className="pl-4">
+    <main>
       <H1>Change your password</H1>
       <form className="flex flex-col gap-2 w-[300px]">
         <div>

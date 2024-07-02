@@ -23,7 +23,7 @@ export type ProductsSchemaType = typeof products.$inferSelect
 export const user_cart = mysqlTable('user_cart', {
     id: int('id').primaryKey().autoincrement(),
     userId: int('userId').notNull().references(() => users.id),
-    productId: int('productId').unique().notNull().references(() => products.id, { onDelete: 'cascade' }),
+    productId: int('productId').notNull().references(() => products.id, { onDelete: 'cascade' }),
     quantity: int('quantity'),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
@@ -31,9 +31,9 @@ export const user_cart = mysqlTable('user_cart', {
 // //:::::: Customer orders ::::::
 
 export const customer_orders = mysqlTable('customer_orders', {
-    id: varchar('id', { length: 50, enum: ['pending', 'paid', 'cancelled'] }).primaryKey(),
+    id: varchar('id', {length:255}).primaryKey(),
     userId: int('userId').notNull().references(() => users.id),
-    status: varchar('status', { length: 50 }),
+    status: varchar('status', { length: 50, enum: ['pending', 'paid', 'cancelled'] }),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
 

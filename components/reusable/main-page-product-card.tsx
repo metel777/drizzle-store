@@ -19,18 +19,19 @@ export default async function ProductCard({
   editing,
 }: Props) {
   return (
-    <main className="bg-white p-2 rounded-sm grid grid-rows-2 gap-2">
+    <main className="bg-white p-2 rounded-sm grid grid-rows-2 gap-2 border border-transparent hover:border-lime-500 hover:shadow-xl">
       <header>
-        <h3 className="text-xl font-bold text-text-strong">{title}</h3>
-        <img className="w-full max-h-[120px]" src={imageUrl} alt="" />
+        <Link href={`/product/${id}`}>
+          <h3 className="text-xl font-bold text-text-strong">{title}</h3>
+          <img className="w-full max-h-[120px]" src={imageUrl} alt="" />
+        </Link>
       </header>
       <section>
         <h3 className="text-xl font-bold text-text-strong">$ {price}</h3>
         <p className="text-[15px] line-clamp-4  bg-white">{description}</p>
-
         <section className="mt-5">
           {editing ? (
-            <main className="flex justify-between">
+            <main className="flex justify-between ">
               <Link href={`/admin/edit-product/${id}`}>
                 <Button variant="outline">Edit</Button>
               </Link>
@@ -43,12 +44,6 @@ export default async function ProductCard({
             </main>
           ) : (
             <section className="flex justify-between">
-              <Link href={`/product/${id}`}>
-                <Button size="sm" type="submit" variant="outline">
-                  Details
-                </Button>
-              </Link>
-              {/* <AddToCartBtn id={id} /> */}
               <AddToCartBtn id={id} />
             </section>
           )}

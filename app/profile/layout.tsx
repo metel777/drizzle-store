@@ -155,7 +155,7 @@ export default async function ProfilePage({ children }: Props) {
           </NavSection>
         </nav>
       </main>
-      <main className="w-full h-24">{children}</main>
+      <main className="w-full h-24 pl-6">{children}</main>
     </main>
   )
 }

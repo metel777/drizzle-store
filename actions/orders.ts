@@ -65,7 +65,13 @@ export async function getAllOrders(userId: any) {
         //:::::::Main:::::::: 
         const order: finalProducts[] = []
 
-        const allProducts = await db.select().from(products)
+        // //get products
+        const orderItemsProducts = await db.select({ product_id: order_items.products_id }).from(order_items)
+        const productIds = orderItemsProducts.map(item => {
+            return item.product_id
+        })
+
+        const allProducts = await db.select().from(products).where(inArray(products.id, productIds))
 
         orderItems.map(item => {
 
@@ -94,5 +100,5 @@ export async function getAllOrders(userId: any) {
         return order
     }
     return []
-    
+
 }

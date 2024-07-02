@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: C) {
         className={`${Suisse.className} bg-bgPrimary text-text-weak subpixel-antialiased overflow-x-hidden`}
       >
         <div className="logo_mark"></div>
-        <NextTopLoader color="#84cc16" height={4} />
+        <NextTopLoader showSpinner={false} color="#84cc16" height={4} />
         <Header />
         <Toaster />
         <main className="h-screen max-w-[1200px] mx-auto pt-20">
