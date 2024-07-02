@@ -1,4 +1,12 @@
-import { mysqlTable, serial, varchar, int, timestamp, datetime, text } from "drizzle-orm/mysql-core";
+import { mysqlTable, serial, varchar, int, timestamp, datetime, text, decimal } from "drizzle-orm/mysql-core";
+
+
+export const users = mysqlTable('users', {
+    id: int('id').primaryKey().autoincrement(),
+    email: varchar('email', { length: 256 }).unique().notNull(),
+    password: varchar('password', { length: 256 }).notNull(),
+    // createdAt: timestamp("createdAt").notNull().defaultNow(),
+})
 
 export const products = mysqlTable('products', {
     id: int('id').primaryKey().unique().autoincrement(),
@@ -10,18 +18,31 @@ export const products = mysqlTable('products', {
     updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 })
 
-export const users = mysqlTable('users', {
-    id: int('id').primaryKey().autoincrement(),
-    email: varchar('email', { length: 256 }).unique().notNull(),
-    password: varchar('password', { length: 256 }).notNull(),
-})
+export type ProductsSchemaType = typeof products.$inferSelect
 
-export const customer_orders = mysqlTable('customer_orders', {
+export const user_cart = mysqlTable('user_cart', {
     id: int('id').primaryKey().autoincrement(),
     userId: int('userId').notNull().references(() => users.id),
-    productId: int('productId').unique().notNull().references(() => products.id, {onDelete: 'cascade'}),
+    productId: int('productId').unique().notNull().references(() => products.id, { onDelete: 'cascade' }),
+    quantity: int('quantity'),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
-    quantity: int('quantity')
+})
+
+// //:::::: Customer orders ::::::
+
+export const customer_orders = mysqlTable('customer_orders', {
+    id: varchar('id', { length: 50, enum: ['pending', 'paid', 'cancelled'] }).primaryKey(),
+    userId: int('userId').notNull().references(() => users.id),
+    status: varchar('status', { length: 50 }),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+})
+
+export const order_items = mysqlTable('order_items', {
+    order_id: varchar('order_id', { length: 50 }).references(() => customer_orders.id),
+    products_id: int('productId').notNull().references(() => products.id, { onDelete: 'cascade' }),
+    quantity: int('quantity'),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    orderUserId: int('orderUserId').notNull().references(() => customer_orders.userId),
 })
 
 export const sessions = mysqlTable('sessions', {
@@ -29,6 +50,39 @@ export const sessions = mysqlTable('sessions', {
     expiresAt: datetime('expiresAt').notNull(),
     userId: int("userId").notNull().references(() => users.id),
 })
+
+// //:::::: Customer cart ::::::
+
+// export const customer_carts = mysqlTable('customer_carts', {
+//     id: int('id').primaryKey().autoincrement(),
+//     userId: int('userId').notNull().references(() => users.id),
+//     createdAt: timestamp("createdAt").notNull().defaultNow(),
+// })
+
+// export const cart_items = mysqlTable('cart_items', {
+//     cart_id: int('cart_id').references(() => customer_carts.id),
+//     products_id: int('productId').unique().notNull().references(() => products.id, { onDelete: 'cascade' }),
+//     quantity: int('quantity'),
+//     createdAt: timestamp("createdAt").notNull().defaultNow(),
+// })
+
+// //:::::: Customer orders ::::::
+
+// export const customer_orders = mysqlTable('customer_orders', {
+//     id: int('id').primaryKey().autoincrement(),
+//     userId: int('userId').notNull().references(() => users.id),
+//     status: varchar('status', {length: 50}),
+//     createdAt: timestamp("createdAt").notNull().defaultNow(),
+// })
+
+// export const order_items = mysqlTable('order_items', {
+//     order_id: int('order_id').references(() => customer_orders.id),
+//     products_id: int('productId').unique().notNull().references(() => products.id, { onDelete: 'cascade' }),
+//     quantity: int('quantity'),
+//     createdAt: timestamp("createdAt").notNull().defaultNow(),
+// })
+
+
 
 // CREATE TABLE users (
 //     id INT AUTO_INCREMENT PRIMARY KEY,

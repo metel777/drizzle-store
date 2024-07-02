@@ -1,7 +1,9 @@
 import { defineConfig } from 'drizzle-kit'
 
+export const mysql_password = process.env.NEXT_PUBLIC_MYSQL_PASSWORD as string
+
 export default defineConfig({
-    schema: './lib/schema.ts',
+    schema: './database/schema.ts',
     dialect: 'mysql',
     out: './database/migrations',
     dbCredentials: {

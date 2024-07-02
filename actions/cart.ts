@@ -2,7 +2,7 @@
 
 import { verifyAuthSession } from "@/lib/auth";
 import { db } from "@/database/database";
-import { customer_orders, products } from "@/database/schema";
+import { user_cart, products } from "@/database/schema";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath, unstable_cache } from "next/cache";
 
@@ -13,13 +13,13 @@ export const getCart = async () => {
     const userId = Number(session?.userId);
 
     // check if cart exists
-    const res = await db.select().from(customer_orders).where(eq(customer_orders.userId, userId));
+    const res = await db.select().from(user_cart).where(eq(user_cart.userId, userId));
 
     if (res.length > 0) {
         // get array with all productId and their quantities that are stored in user cart
-        const productQuantities = res.map(order => ({
-            productId: order.productId,
-            quantity: order.quantity
+        const productQuantities = res.map(cart => ({
+            productId: cart.productId,
+            quantity: cart.quantity
         }));
 
         // select all productsId 
@@ -47,35 +47,33 @@ export async function addToCart(userId: any, productId: any) {
     // check if cart exists on user 
     const res = await db
         .select()
-        .from(customer_orders)
+        .from(user_cart)
         .where(and(
-            eq(customer_orders.userId, userId),
-            eq(customer_orders.productId, productId)
+            eq(user_cart.userId, userId),
+            eq(user_cart.productId, productId)
         ))
 
     if (res.length > 0) {
         // if product already exists - increase quantity
-        await db.update(customer_orders)
-            .set({ quantity: sql`${customer_orders.quantity} + 1`, })
+        await db.update(user_cart)
+            .set({ quantity: sql`${user_cart.quantity} + 1`, })
             .where((and(
-                eq(customer_orders.userId, userId),
-                eq(customer_orders.productId, productId))))
+                eq(user_cart.userId, userId),
+                eq(user_cart.productId, productId))))
     }
 
     //else just insert new item
     else {
-        await db.insert(customer_orders).values({ userId, productId, quantity: 1 })
+        await db.insert(user_cart).values({ userId, productId, quantity: 1 })
     }
-
-    
-    console.log('::::::::: Succed. added new item to cart ::::::::')
+   
 }
 
 export async function deleteFromCart(productId: any, userId: any) {
     await db
-        .delete(customer_orders)
+        .delete(user_cart)
         .where(and(
-            eq(customer_orders.userId, userId),
-            eq(customer_orders.productId, productId)
+            eq(user_cart.userId, userId),
+            eq(user_cart.productId, productId)
         ))
 }

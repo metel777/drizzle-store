@@ -1,5 +1,5 @@
 import { db } from "@/database/database";
-import { customer_orders, products } from "@/database/schema";
+import { user_cart, products } from "@/database/schema";
 import { verifyAuthSession } from "@/lib/auth";
 import { desc, eq, sql } from "drizzle-orm";
 
@@ -45,10 +45,10 @@ export async function getTotalPrice() {
 
     const { user } = await verifyAuthSession()
     const res = await db.execute(sql`
-        SELECT SUM(${products.price} * ${customer_orders.quantity}) AS total_price
-        FROM ${customer_orders} 
-        JOIN ${products} ON ${customer_orders.productId} = ${products.id}
-        WHERE ${customer_orders.userId} = ${user?.id};
+        SELECT SUM(${products.price} * ${user_cart.quantity}) AS total_price
+        FROM ${user_cart} 
+        JOIN ${products} ON ${user_cart.productId} = ${products.id}
+        WHERE ${user_cart.userId} = ${user?.id};
         `)
     return res[0]
 

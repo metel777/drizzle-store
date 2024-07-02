@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "82d9d9d4-bf1f-4536-9620-cd5821493b4f",
+  "id": "3da57295-4452-4e91-bbde-81cd9889fe73",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "customer_orders": {
@@ -9,10 +9,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "userId": {
           "name": "userId",
@@ -21,11 +21,11 @@
           "notNull": true,
           "autoincrement": false
         },
-        "productId": {
-          "name": "productId",
-          "type": "int",
+        "status": {
+          "name": "status",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "createdAt": {
@@ -35,13 +35,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "(now())"
-        },
-        "quantity": {
-          "name": "quantity",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {},
@@ -58,19 +51,6 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
-        },
-        "customer_orders_productId_products_id_fk": {
-          "name": "customer_orders_productId_products_id_fk",
-          "tableFrom": "customer_orders",
-          "tableTo": "products",
-          "columnsFrom": [
-            "productId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -81,14 +61,92 @@
           ]
         }
       },
-      "uniqueConstraints": {
-        "customer_orders_productId_unique": {
-          "name": "customer_orders_productId_unique",
-          "columns": [
-            "productId"
-          ]
+      "uniqueConstraints": {}
+    },
+    "order_items": {
+      "name": "order_items",
+      "columns": {
+        "order_id": {
+          "name": "order_id",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "productId": {
+          "name": "productId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "orderUserId": {
+          "name": "orderUserId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
-      }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "order_items_order_id_customer_orders_id_fk": {
+          "name": "order_items_order_id_customer_orders_id_fk",
+          "tableFrom": "order_items",
+          "tableTo": "customer_orders",
+          "columnsFrom": [
+            "order_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "order_items_productId_products_id_fk": {
+          "name": "order_items_productId_products_id_fk",
+          "tableFrom": "order_items",
+          "tableTo": "products",
+          "columnsFrom": [
+            "productId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "order_items_orderUserId_customer_orders_userId_fk": {
+          "name": "order_items_orderUserId_customer_orders_userId_fk",
+          "tableFrom": "order_items",
+          "tableTo": "customer_orders",
+          "columnsFrom": [
+            "orderUserId"
+          ],
+          "columnsTo": [
+            "userId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "products": {
       "name": "products",
@@ -214,6 +272,92 @@
         }
       },
       "uniqueConstraints": {}
+    },
+    "user_cart": {
+      "name": "user_cart",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "productId": {
+          "name": "productId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_cart_userId_users_id_fk": {
+          "name": "user_cart_userId_users_id_fk",
+          "tableFrom": "user_cart",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "user_cart_productId_products_id_fk": {
+          "name": "user_cart_productId_products_id_fk",
+          "tableFrom": "user_cart",
+          "tableTo": "products",
+          "columnsFrom": [
+            "productId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_cart_id": {
+          "name": "user_cart_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "user_cart_productId_unique": {
+          "name": "user_cart_productId_unique",
+          "columns": [
+            "productId"
+          ]
+        }
+      }
     },
     "users": {
       "name": "users",

@@ -3,7 +3,6 @@ import { getTotalPrice } from "@/actions/products"
 import { H1 } from "@/components/reusable/titles"
 import { Button } from "@/components/ui/button"
 import PaymentForm from "./payment-form"
-import Image from "next/image"
 
 export default async function CartPage() {
   const res = await getCart()

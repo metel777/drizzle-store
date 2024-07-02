@@ -27,7 +27,7 @@ export default function ProfileDropdown({}: Props) {
       <DropdownMenuContent className="w-[150px] shadow-taobao">
         <DropdownMenuLabel className="text-text-strong">My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href="profile">
+        <Link href="/profile">
           <DropdownMenuItem>Profile</DropdownMenuItem>
         </Link>
         <DropdownMenuItem> Settings</DropdownMenuItem>

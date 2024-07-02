@@ -3,7 +3,6 @@ import { Button } from "./ui/button"
 import { verifyAuthSession } from "@/lib/auth"
 import ProfileDropdown from "./reusable/profile-dropdown"
 
-
 export default async function Header() {
   const isSignedIn = await verifyAuthSession()
 
@@ -17,11 +16,11 @@ export default async function Header() {
           <Link className="hover:underline" href="/cart">
             Cart
           </Link>
+          <Link className="hover:underline" href="/profile/orders">
+            Orders
+          </Link>
           {isSignedIn.user ? (
             <>
-              <Link className="hover:underline" href="/checkout">
-                Checkout
-              </Link>
               <Link className="hover:underline" href="/admin/products">
                 Edit products
               </Link>
