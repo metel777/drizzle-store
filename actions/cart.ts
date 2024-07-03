@@ -7,13 +7,11 @@ import { and, eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath, unstable_cache } from "next/cache";
 
 export const getCart = async () => {
-
-    // auth verification 
     const { session } = await verifyAuthSession();
-    const userId = Number(session?.userId);
+    const userId = session?.userId;
 
     // check if cart exists
-    const res = await db.select().from(user_cart).where(eq(user_cart.userId, userId));
+    const res = await db.select().from(user_cart).where(eq(user_cart.userId, userId as any));
 
     if (res.length > 0) {
         // get array with all productId and their quantities that are stored in user cart
@@ -41,7 +39,7 @@ export const getCart = async () => {
     return [];
 }
 
-export async function addToCart(userId: any, productId: any) {
+export async function addToCart(userId: string, productId: number) {
     revalidatePath('/cart')
     
     // check if cart exists on user 
@@ -64,7 +62,7 @@ export async function addToCart(userId: any, productId: any) {
 
     //else just insert new item
     else {
-        await db.insert(user_cart).values({ userId, productId, quantity: 1 })
+        await db.insert(user_cart).values({ productId: productId, userId: userId, quantity: 1 })
     }
    
 }

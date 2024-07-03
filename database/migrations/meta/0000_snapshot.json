@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "9c7ef861-8933-4098-a7c2-2d1f68d23b08",
+  "id": "d64be9ef-0ded-407a-aaa9-963f089de1d4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "customer_orders": {
@@ -14,6 +14,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "status": {
           "name": "status",
           "type": "varchar(50)",
@@ -21,8 +28,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -32,12 +39,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "customer_orders_id_users_id_fk": {
-          "name": "customer_orders_id_users_id_fk",
+        "customer_orders_user_id_users_id_fk": {
+          "name": "customer_orders_user_id_users_id_fk",
           "tableFrom": "customer_orders",
           "tableTo": "users",
           "columnsFrom": [
-            "id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -80,8 +87,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -124,15 +131,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "order_items_order_user_id_customer_orders_id_fk": {
-          "name": "order_items_order_user_id_customer_orders_id_fk",
+        "order_items_order_user_id_customer_orders_user_id_fk": {
+          "name": "order_items_order_user_id_customer_orders_user_id_fk",
           "tableFrom": "order_items",
           "tableTo": "customer_orders",
           "columnsFrom": [
             "order_user_id"
           ],
           "columnsTo": [
-            "id"
+            "user_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -158,8 +165,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "imageUrl": {
-          "name": "imageUrl",
+        "image_url": {
+          "name": "image_url",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true,
@@ -179,16 +186,16 @@
           "notNull": true,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -264,13 +271,20 @@
       "columns": {
         "id": {
           "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_id": {
+          "name": "user_id",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "productId": {
-          "name": "productId",
+        "product_id": {
+          "name": "product_id",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -283,8 +297,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -294,12 +308,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_cart_id_users_id_fk": {
-          "name": "user_cart_id_users_id_fk",
+        "user_cart_user_id_users_id_fk": {
+          "name": "user_cart_user_id_users_id_fk",
           "tableFrom": "user_cart",
           "tableTo": "users",
           "columnsFrom": [
-            "id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -307,12 +321,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "user_cart_productId_products_id_fk": {
-          "name": "user_cart_productId_products_id_fk",
+        "user_cart_product_id_products_id_fk": {
+          "name": "user_cart_product_id_products_id_fk",
           "tableFrom": "user_cart",
           "tableTo": "products",
           "columnsFrom": [
-            "productId"
+            "product_id"
           ],
           "columnsTo": [
             "id"
@@ -355,8 +369,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,

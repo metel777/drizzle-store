@@ -46,7 +46,7 @@ export default function SignUp() {
           <Input
             className={`${
               state.error.password !==
-                "Password must be at least 8 characters long." &&
+                "Password must be at least 8 characters long." && state.error.password  &&
               "border-red-500"
             }`}
             placeholder="Confirm password"

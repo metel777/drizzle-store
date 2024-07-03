@@ -7,8 +7,9 @@ import { generateIdFromEntropySize } from "lucia"
 import { db } from "@/database/database"
 import { users } from "@/database/schema"
 import { getUserByEmail } from "./user"
+import { hashPassword } from "@/lib/hash"
 
-interface ActionResult {
+export interface ActionResult {
     error: {
         email?: string
         password?: string
@@ -41,12 +42,7 @@ export async function signup(_: ActionResult, formData: FormData): Promise<Actio
 
 
 
-    const hashedPassword = await hash(password, {
-        memoryCost: 19456,
-        timeCost: 2,
-        hashLength: 32,
-        parallelism: 1
-    })
+    const hashedPassword = await hashPassword(password)
 
     const userId = generateIdFromEntropySize(10);
 

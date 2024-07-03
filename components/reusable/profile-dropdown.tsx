@@ -30,9 +30,9 @@ export default function ProfileDropdown({}: Props) {
         <Link href="/profile">
           <DropdownMenuItem>Profile</DropdownMenuItem>
         </Link>
-        <DropdownMenuItem> Settings</DropdownMenuItem>
-        <DropdownMenuItem> My adress</DropdownMenuItem>
-        <DropdownMenuItem> Payment</DropdownMenuItem>
+        <DropdownMenuItem disabled> Settings</DropdownMenuItem>
+        <DropdownMenuItem disabled> My adress</DropdownMenuItem>
+        <DropdownMenuItem disabled> Payment</DropdownMenuItem>
         <DropdownMenuSeparator />
         <form action={logout} className="flex justify-center ">
           <Button type="submit" variant="link" className="w-full">
