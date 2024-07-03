@@ -9,17 +9,27 @@ import { desc } from "drizzle-orm"
 export default async function HomeShop({
   searchParams,
 }: {
-  searchParams: { page: string }
+  searchParams: { page: string; order: string }
 }) {
   const page = Number(searchParams.page)
+
+  function orderBy() {
+    if (searchParams.order === "price") {
+      return products.price
+    } else if (searchParams.order === "name") {
+      return products.title
+    } else if (searchParams.order === "newest") {
+      return products.createdAt
+    }
+  }
 
   const data = await db
     .select()
     .from(products)
-    .orderBy(desc(products.createdAt))
+    .orderBy(desc(orderBy() as any))
     .limit(5)
     .offset(5 * (page - 1))
-    
+
   return (
     <main className="relative">
       <H1>Shop</H1>
