@@ -5,50 +5,47 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useFormState } from "react-dom"
-import { formMessages, signin } from "@/actions/auth"
+import { signin } from "@/actions/auth"
 import { toast } from "@/components/ui/use-toast"
 import { Label } from "@/components/ui/label"
 
+const initialState = {
+  error: {
+    email: "",
+    password: "",
+  },
+}
+
 export default function SignIn() {
-  const initialState: formMessages = {
-    errors: { email: "", password: ""},
-  }
-
-  const [formState, formAction] = useFormState(signin, initialState)
-
-  function handleClick() {
-    if (!formState.errors.email && !formState.errors.password) {
-      toast({
-        title: "Succes",
-      })
-    }
-  }
-
+  const [state, action] = useFormState(signin, initialState)
   return (
     <main className="bg-white w-[400px] rounded-sm mx-auto">
-      <form action={formAction} className="">
+      <form action={action} className="">
         <section className="px-4 text-center pt-4">
           <H1>Sign In</H1>
         </section>
         <hr />
         <section className="p-4 flex flex-col gap-2">
           <Label htmlFor="email">Your email address</Label>
-          <Input placeholder="Email" name="email" />
-          {formState.errors.email && (
-            <p className="text-red-500 text-sm -mt-2">
-              {formState.errors.email}
-            </p>
-          )}
+          <Input
+            className={`${state.error.email && "border-red-500"}`}
+            placeholder="Email"
+            name="email"
+          />
           <Label htmlFor="password">Password</Label>
-          <Input placeholder="Password" name="password" />
-
-          {formState.errors.password && (
-            <p className="text-red-500 text-sm -mt-2">
-              {formState.errors.password}
-            </p>
+          <Input
+            className={`${state.error.password && "border-red-500"}`}
+            placeholder="Password"
+            name="password"
+          />
+          {state.error.email && (
+            <p className="text-sm text-red-500">{state.error.email}</p>
+          )}
+          {state.error.password && (
+            <p className="text-sm text-red-500">{state.error.password}</p>
           )}
 
-          <Button onClick={() => handleClick()} type="submit" className="mt-5">
+          <Button type="submit" className="mt-5">
             Sign In
           </Button>
           <Link

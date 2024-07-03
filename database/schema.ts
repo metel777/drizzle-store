@@ -2,14 +2,14 @@ import { mysqlTable, serial, varchar, int, timestamp, datetime, text, decimal } 
 
 
 export const users = mysqlTable('users', {
-    id: int('id').primaryKey().autoincrement(),
+    id: varchar("id", { length: 255 }).primaryKey(),
     email: varchar('email', { length: 256 }).unique().notNull(),
-    password: varchar('password', { length: 256 }).notNull(),
-    // createdAt: timestamp("createdAt").notNull().defaultNow(),
+    passwordHash: varchar('password_hash', { length: 256 }).notNull(),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
 
 export const products = mysqlTable('products', {
-    id: int('id').primaryKey().unique().autoincrement(),
+    id: int("id").autoincrement().primaryKey(),
     title: varchar('title', { length: 256 }).notNull(),
     imageUrl: varchar('imageUrl', { length: 256 }).notNull(),
     price: int('price').notNull(),
@@ -22,7 +22,7 @@ export type ProductsSchemaType = typeof products.$inferSelect
 
 export const user_cart = mysqlTable('user_cart', {
     id: int('id').primaryKey().autoincrement(),
-    userId: int('userId').notNull().references(() => users.id),
+    userId: varchar("id", { length: 255 }).notNull().references(() => users.id),
     productId: int('productId').notNull().references(() => products.id, { onDelete: 'cascade' }),
     quantity: int('quantity'),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
@@ -31,24 +31,24 @@ export const user_cart = mysqlTable('user_cart', {
 // //:::::: Customer orders ::::::
 
 export const customer_orders = mysqlTable('customer_orders', {
-    id: varchar('id', {length:255}).primaryKey(),
-    userId: int('userId').notNull().references(() => users.id),
+    id: varchar('id', { length: 255 }).primaryKey(),
+    userId:varchar("id", { length: 255 }).notNull().references(() => users.id),
     status: varchar('status', { length: 50, enum: ['pending', 'paid', 'cancelled'] }),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
 
 export const order_items = mysqlTable('order_items', {
-    order_id: varchar('order_id', { length: 50 }).references(() => customer_orders.id),
-    products_id: int('productId').notNull().references(() => products.id, { onDelete: 'cascade' }),
+    order_id: varchar('order_id', { length: 255 }).references(() => customer_orders.id),
+    products_id: int('product_id').references(() => products.id, { onDelete: 'cascade' }),
     quantity: int('quantity'),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
-    orderUserId: int('orderUserId').notNull().references(() => customer_orders.userId),
+    orderUserId: varchar('order_user_id', {length: 255}).notNull().references(() => customer_orders.userId),
 })
 
 export const sessions = mysqlTable('sessions', {
-    id: varchar('id', { length: 256 }).primaryKey().notNull(),
-    expiresAt: datetime('expiresAt').notNull(),
-    userId: int("userId").notNull().references(() => users.id),
+    id: varchar("id", { length: 255 }).primaryKey(),
+    userId: varchar("user_id", { length: 255 }).notNull().references(() => users.id),
+    expiresAt: datetime("expires_at").notNull()
 })
 
 // //:::::: Customer cart ::::::

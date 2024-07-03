@@ -4,9 +4,7 @@ import { db } from "../database/database";
 import { sessions, users } from "../database/schema";
 import { cookies } from "next/headers";
 
-const adapter = new DrizzleMySQLAdapter(db, sessions as any, users as any) //sesion and users type error
-
-
+const adapter = new DrizzleMySQLAdapter(db, sessions, users as any)
 
 const lucia = new Lucia(adapter, {
     sessionCookie: {
@@ -14,9 +12,27 @@ const lucia = new Lucia(adapter, {
         attributes: {
             secure: process.env.NODE_ENV === 'production'
         }
+    },
+    getUserAttributes: (attributes) => {
+        return {
+            email: attributes.email
+        }
     }
 })
 
+declare module "lucia" {
+    interface Register {
+        Lucia: typeof lucia;
+        DatabaseUserAttributes: DatabaseUserAttributes;
+    }
+}
+
+interface DatabaseUserAttributes {
+    email: string;
+}
+
+
+//  :::::::::::::lucia actions::::::::::: 
 export async function createAuthSession(userId: string) {
     const session = await lucia.createSession(userId, {})
     const sessionCookie = lucia.createSessionCookie(session.id)
@@ -77,7 +93,7 @@ export async function destroySession() {
     }
 
     await lucia.invalidateSession(session.id)
-    
+
     const sessionCookie = lucia.createBlankSessionCookie()
     cookies().set(
         sessionCookie.name,
