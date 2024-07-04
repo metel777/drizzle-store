@@ -32,16 +32,17 @@ export default function FilterSection() {
   return (
     <main>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex gap-2 items-center justify-between bg-fill hover:text-text-strong rounded-md w-32 px-2 py-1 transition-all">
+        <DropdownMenuTrigger className="flex gap-2 items-center justify-between hover:text-text-strong rounded-md w-40 px-2 py-1.5 transition-all focus:border-0">
           Order by <ChevronDown size={18} />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="capitalize shadow-xl">
+        <DropdownMenuContent className="capitalize shadow-xl w-40 ">
           <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
             {orderVariants.map((item) => (
               <DropdownMenuRadioItem
                 onClick={() => handleClick(item)}
                 key={item}
                 value={item}
+                className="cursor-pointer"
               >
                 {item}
               </DropdownMenuRadioItem>

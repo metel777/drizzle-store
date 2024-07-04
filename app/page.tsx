@@ -20,13 +20,13 @@ export default async function HomeShop({
       return products.title
     } else if (searchParams.order === "newest") {
       return products.createdAt
-    }
+    } 
   }
 
   const data = await db
     .select()
     .from(products)
-    .orderBy(desc(orderBy() as any))
+    .orderBy(desc(orderBy() as any || products.createdAt))
     .limit(5)
     .offset(5 * (page - 1))
 
