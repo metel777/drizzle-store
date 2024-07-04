@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "3da57295-4452-4e91-bbde-81cd9889fe73",
+  "id": "d64be9ef-0ded-407a-aaa9-963f089de1d4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "customer_orders": {
@@ -9,14 +9,14 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(50)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "userId": {
-          "name": "userId",
-          "type": "int",
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -28,8 +28,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -39,12 +39,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "customer_orders_userId_users_id_fk": {
-          "name": "customer_orders_userId_users_id_fk",
+        "customer_orders_user_id_users_id_fk": {
+          "name": "customer_orders_user_id_users_id_fk",
           "tableFrom": "customer_orders",
           "tableTo": "users",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -68,16 +68,16 @@
       "columns": {
         "order_id": {
           "name": "order_id",
-          "type": "varchar(50)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "productId": {
-          "name": "productId",
+        "product_id": {
+          "name": "product_id",
           "type": "int",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "quantity": {
@@ -87,17 +87,17 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         },
-        "orderUserId": {
-          "name": "orderUserId",
-          "type": "int",
+        "order_user_id": {
+          "name": "order_user_id",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -118,12 +118,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "order_items_productId_products_id_fk": {
-          "name": "order_items_productId_products_id_fk",
+        "order_items_product_id_products_id_fk": {
+          "name": "order_items_product_id_products_id_fk",
           "tableFrom": "order_items",
           "tableTo": "products",
           "columnsFrom": [
-            "productId"
+            "product_id"
           ],
           "columnsTo": [
             "id"
@@ -131,15 +131,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "order_items_orderUserId_customer_orders_userId_fk": {
-          "name": "order_items_orderUserId_customer_orders_userId_fk",
+        "order_items_order_user_id_customer_orders_user_id_fk": {
+          "name": "order_items_order_user_id_customer_orders_user_id_fk",
           "tableFrom": "order_items",
           "tableTo": "customer_orders",
           "columnsFrom": [
-            "orderUserId"
+            "order_user_id"
           ],
           "columnsTo": [
-            "userId"
+            "user_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -165,8 +165,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "imageUrl": {
-          "name": "imageUrl",
+        "image_url": {
+          "name": "image_url",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true,
@@ -186,16 +186,16 @@
           "notNull": true,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -213,35 +213,28 @@
           ]
         }
       },
-      "uniqueConstraints": {
-        "products_id_unique": {
-          "name": "products_id_unique",
-          "columns": [
-            "id"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
     "sessions": {
       "name": "sessions",
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(256)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "expiresAt": {
-          "name": "expiresAt",
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
           "type": "datetime",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "userId": {
-          "name": "userId",
-          "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -249,12 +242,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "sessions_userId_users_id_fk": {
-          "name": "sessions_userId_users_id_fk",
+        "sessions_user_id_users_id_fk": {
+          "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -283,15 +276,15 @@
           "notNull": true,
           "autoincrement": true
         },
-        "userId": {
-          "name": "userId",
-          "type": "int",
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "productId": {
-          "name": "productId",
+        "product_id": {
+          "name": "product_id",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -304,8 +297,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -315,12 +308,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_cart_userId_users_id_fk": {
-          "name": "user_cart_userId_users_id_fk",
+        "user_cart_user_id_users_id_fk": {
+          "name": "user_cart_user_id_users_id_fk",
           "tableFrom": "user_cart",
           "tableTo": "users",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -328,12 +321,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "user_cart_productId_products_id_fk": {
-          "name": "user_cart_productId_products_id_fk",
+        "user_cart_product_id_products_id_fk": {
+          "name": "user_cart_product_id_products_id_fk",
           "tableFrom": "user_cart",
           "tableTo": "products",
           "columnsFrom": [
-            "productId"
+            "product_id"
           ],
           "columnsTo": [
             "id"
@@ -350,24 +343,17 @@
           ]
         }
       },
-      "uniqueConstraints": {
-        "user_cart_productId_unique": {
-          "name": "user_cart_productId_unique",
-          "columns": [
-            "productId"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
     "users": {
       "name": "users",
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "email": {
           "name": "email",
@@ -376,12 +362,20 @@
           "notNull": true,
           "autoincrement": false
         },
-        "password": {
-          "name": "password",
+        "password_hash": {
+          "name": "password_hash",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
         }
       },
       "indexes": {},

@@ -6,7 +6,7 @@ type Props = {
   title: string
   imageUrl: string
   price: number
-  id: any
+  id: number
   description: any
   editing: boolean
 }
@@ -44,7 +44,7 @@ export default async function ProductCard({
             </main>
           ) : (
             <section className="flex justify-between">
-              <AddToCartBtn id={id} />
+              <AddToCartBtn productId={id} />
             </section>
           )}
         </section>

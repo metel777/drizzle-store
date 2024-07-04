@@ -1,15 +1,12 @@
-import crypto from 'node:crypto';
+import { hash } from "argon2";
 
-export function hashUserPassword(password: string) {
-  const salt = crypto.randomBytes(16).toString('hex');
+export async function hashPassword(password: string) {
+  const hashedPassword = await hash(password, {
+    memoryCost: 19456,
+    timeCost: 2,
+    hashLength: 32,
+    parallelism: 1
+  })
 
-  const hashedPassword = crypto.scryptSync(password, salt, 64);
-  return hashedPassword.toString('hex') + ':' + salt;
-}
-
-export function verifyPassword(storedPassword:string, suppliedPassword:string) {
-  const [hashedPassword, salt] = storedPassword.split(':');
-  const hashedPasswordBuf = Buffer.from(hashedPassword, 'hex');
-  const suppliedPasswordBuf = crypto.scryptSync(suppliedPassword, salt, 64);
-  return crypto.timingSafeEqual(hashedPasswordBuf, suppliedPasswordBuf);
+  return hashedPassword
 }

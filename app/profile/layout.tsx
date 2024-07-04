@@ -8,7 +8,7 @@ type Props = { children: React.ReactNode }
 export default async function ProfilePage({ children }: Props) {
   const { user } = await verifyAuthSession()
   if (!user) {
-    redirect("/auth?m=singin")
+    redirect("/auth/singin")
   }
   return (
     <main className="flex flex-col items-center md:items-start md:flex-row ">

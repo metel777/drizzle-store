@@ -1,32 +1,59 @@
+"use client"
+
+import { changePassword } from "@/actions/profile"
 import { H1 } from "@/components/reusable/titles"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { verifyAuthSession } from "@/lib/auth"
-import { redirect } from "next/navigation"
+import { useFormState } from "react-dom"
 
-export default async function ProfilePage() {
-  const { user } = await verifyAuthSession()
-  if (!user) {
-    redirect("/auth?m=singin")
-  }
+const initialState = {
+  error: {
+    oldPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  },
+}
+
+export default function ProfilePage() {
+  const [state, action] = useFormState(changePassword, initialState)
+
+  const { confirmNewPassword, newPassword, oldPassword } = state?.error
 
   return (
     <main>
       <H1>Change your password</H1>
-      <form className="flex flex-col gap-2 w-[300px]">
+      <form action={action} className="flex flex-col gap-2 w-[300px]">
         <div>
           <Label>Your old password</Label>
-          <Input placeholder="Enter your old password" />
+          <Input
+            className={`${oldPassword && "border-red-500"}`}
+            name="oldPassword"
+            placeholder="Enter your old password"
+          />
+          {oldPassword && <p className="text-sm text-red-500">{oldPassword}</p>}
         </div>
         <div>
           <Label>Your new password</Label>
-          <Input placeholder="Enter your new password" />
+          <Input
+            className={`${newPassword && "border-red-500"}`}
+            name="newPassword"
+            placeholder="Enter your new password"
+          />
+          
         </div>
         <div>
           <Label>Confirm your new password</Label>
-          <Input placeholder="Enter your new password" />
+          <Input
+            className={`${confirmNewPassword && "border-red-500"}`}
+            name="confirmNewPassword"
+            placeholder="Enter your new password"
+          />
+          {confirmNewPassword && (
+            <p className="text-sm text-red-500">{confirmNewPassword}</p>
+          )}
         </div>
+
         <Button>Change password</Button>
       </form>
     </main>

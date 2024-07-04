@@ -1,78 +1,107 @@
 'use server'
 
 import { createAuthSession, destroySession } from "@/lib/auth"
-import { hashUserPassword, verifyPassword } from "@/lib/hash"
-import { createUser, getUserByEmail } from "@/actions/user"
 import { redirect } from "next/navigation"
+import { hash, verify } from 'argon2'
+import { generateIdFromEntropySize } from "lucia"
+import { db } from "@/database/database"
+import { users } from "@/database/schema"
+import { getUserByEmail } from "./user"
+import { hashPassword } from "@/lib/hash"
 
-export type formMessages = {
-    errors: {
-        email?: string | null,
-        password?: string | null,
-    }
-
+export interface ActionResult {
+    error: {
+        email?: string
+        password?: string
+    };
 }
 
-export async function signup(prevState: formMessages, formData: FormData) {
-    const email = formData.get('email') as string
+export async function signup(_: ActionResult, formData: FormData): Promise<ActionResult> {
+    // 'use server'
+
+    const email = formData?.get('email') as string
+    if (!email.includes('@') || typeof email !== "string") {
+        _.error.email = 'Please enter a valid email adress.'
+        return _
+    }
+    _.error.email = '' //reset state
+
     const password = formData.get('password') as string
-    const CPassword = formData.get('confirmPassword') as string
+    const confirmPassword = formData.get('confirmPassword') as string
 
-    const errors = prevState.errors
 
-    // :::::::: VALIDATION :::::::::
-    if (!email.includes('@')) {
-        errors.email = 'Please enter a valid email adress.'
-    }
     if (password.trim().length < 8) {
-        errors.password = 'Password must be at least 8 characters long.'
+        _.error.password = 'Password must be at least 8 characters long.'
+        return _
     }
-    if (password !== CPassword) {
-        errors.password = 'Passwords doesnt match.'
+    if (password !== confirmPassword) {
+        _.error.password = 'Passwords doesnt match.'
+        return _
     }
+    _.error.password = '' //reset state
 
-    if (errors.email && errors.password) {
-        return prevState
-    }
 
-    const hashedPassword = hashUserPassword(password)
+
+    const hashedPassword = await hashPassword(password)
+
+    const userId = generateIdFromEntropySize(10);
+
     try {
-        const id = await createUser(email, hashedPassword)
-        await createAuthSession(id as any)
-        redirect('/')
+        await db.insert(users).values({ email: email, id: userId, passwordHash: hashedPassword })
+        await createAuthSession(userId as any)
+        return redirect('/')
     } catch (error: any) {
         if (error.code === 'ER_DUP_ENTRY') {
-            return { errors: { email: 'It seems like an account for chosen email already exists.' } }
+            _.error.email = 'It seems like an account for chosen email already exists.'
+            return _
         }
         throw error
     }
 
 }
 
-export async function signin(prevState: formMessages, formData: FormData) {
-    const email = formData.get('email') as string
+
+
+export async function signin(_: ActionResult, formData: FormData): Promise<ActionResult> {
+    //email verification::::::::::::::
+    const email = formData?.get('email') as string
+    const user = await getUserByEmail(email)
+    const existingUser = user[0]
+
+    if (!email.includes('@') || typeof email !== "string") {
+        _.error.email = 'Please enter a valid email adress.'
+        return _
+    }
+    _.error.email = '' //reset state
+    if (!existingUser) {
+        _.error.email = 'Could not authenticate user, please check your credentials.'
+        return _
+    }
+    _.error.email = '' //reset state
+
+    //password verification:::::::::::::
     const password = formData.get('password') as string
 
-    const res = await getUserByEmail(email)
-    const existingUser = res[0]
-
-    if (!existingUser) {
-        return { errors: { email: 'Could not authenticate user, please check your credentials.' } }
+    if (password.trim().length < 8) {
+        _.error.password = 'Enter password.'
+        return _
     }
-    const isValidPassword = verifyPassword(existingUser.password, password)
+    _.error.password = '' //reset state
 
-    if (!isValidPassword) {
-        return { errors: { password: 'Could not authenticate user, please check your credentials.' } }
+    const validPassword = await verify(existingUser.passwordHash, password)
+
+    if (!validPassword) {
+        _.error.email = 'Could not authenticate user, please check your credentials.'
+        return _
     }
 
-    await createAuthSession(existingUser.id as any)
-
+    await createAuthSession(existingUser.id)
     redirect('/')
 }
 
 export async function logout() {
     await destroySession()
-    redirect('/')
+    redirect('/auth/signin')
 }
 
 
