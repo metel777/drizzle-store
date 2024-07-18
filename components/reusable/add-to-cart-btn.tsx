@@ -1,6 +1,5 @@
 import { addToCart } from "@/actions/cart"
 import { verifyAuthSession } from "@/lib/auth"
-import { toast } from "@/components/ui/use-toast"
 import SubmitBtnWithToast from "./submit-btn-toast"
 
 type Props = { productId: number }

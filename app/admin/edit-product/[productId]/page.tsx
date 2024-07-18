@@ -9,7 +9,6 @@ type Props = {
 export default async function EditProductPage({ params }: Props) {
   const res = await getProductById(params.productId)
   const data = res[0]
-  console.log(data)
 
   return <EditForm product={data} />
 }

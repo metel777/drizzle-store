@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useFormState } from "react-dom"
 import { signin } from "@/actions/auth"
-import { toast } from "@/components/ui/use-toast"
 import { Label } from "@/components/ui/label"
 
 const initialState = {

@@ -7,13 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  CreditCard,
-  Notebook,
-  Settings,
-  UserRound,
-  UserRoundCog,
-} from "lucide-react"
+import { UserRound } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
 
@@ -25,7 +19,9 @@ export default function ProfileDropdown({}: Props) {
         <UserRound />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[150px] shadow-taobao">
-        <DropdownMenuLabel className="text-text-strong">My Account</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-text-strong">
+          My Account
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Link href="/profile">
           <DropdownMenuItem>Profile</DropdownMenuItem>

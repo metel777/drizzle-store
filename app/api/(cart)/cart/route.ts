@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 export async function POST(request: NextRequest, response: NextResponse) {
     const formData = await request.formData()
     revalidatePath('/cart')
-    const productId = formData.get('productId')
+    const productId = Number(formData.get('productId'))
     const { user } = await verifyAuthSession()
     try {
         if (user) {

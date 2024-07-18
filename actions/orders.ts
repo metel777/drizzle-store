@@ -71,7 +71,7 @@ export async function getAllOrders(userId: any) {
             return item.product_id
         })
 
-        const allProducts = await db.select().from(products).where(inArray(products.id, productIds))
+        const allProducts = await db.select().from(products).where(inArray(products.id, productIds as any))
 
         orderItems.map(item => {
 

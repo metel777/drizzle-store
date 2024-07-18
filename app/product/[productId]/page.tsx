@@ -1,7 +1,6 @@
 import { getProductById } from "@/actions/products"
 import AddToCartBtn from "@/components/reusable/add-to-cart-btn"
 import { H1, H2 } from "@/components/reusable/titles"
-import { Button } from "@/components/ui/button"
 
 type params = {
   params: {
@@ -25,7 +24,7 @@ export default async function ProductsPage({ params }: params) {
               <p>{data.description}</p>
               <div className="flex gap-5 mt-3">
                 <H2>$ {data.price}</H2>
-                <AddToCartBtn id={data.id} />
+                <AddToCartBtn productId={data.id} />
               </div>
             </div>
           </section>
