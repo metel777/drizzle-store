@@ -10,7 +10,6 @@ import { LiqPayData } from "@/types/liqpay-data"
 import { redirect } from "next/navigation"
 import crypto from "crypto"
 import { verifyAuthSession } from "@/lib/auth"
-import { getCart } from "@/actions/cart"
 import { eq } from "drizzle-orm"
 
 type Props = { totalPrice: number }
@@ -39,9 +38,6 @@ export default async function PaymentForm({ totalPrice }: Props) {
       <form
         action={async () => {
           "use server"
-
-          // delete cart
-
           //add to order with status pending
           await db.insert(customer_orders).values({
             id: generatedOrderId as any,
@@ -60,7 +56,7 @@ export default async function PaymentForm({ totalPrice }: Props) {
               products_id: cart.productId,
               order_id: generatedOrderId,
               quantity: cart.productId,
-              orderUserId: user.id
+              orderUserId: user.id,
             })
           })
 
@@ -69,8 +65,6 @@ export default async function PaymentForm({ totalPrice }: Props) {
           )
         }}
       >
-        {/* <form action="https://www.liqpay.ua/api/3/checkout" method="POST"> */}
-        {/* <form action="https://www.liqpay.ua/api/request" method="POST"> */}
         <Button className="text-lg" size="lg">
           Order
         </Button>
