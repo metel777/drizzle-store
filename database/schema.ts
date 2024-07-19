@@ -1,18 +1,18 @@
-import { mysqlTable, serial, varchar, int, timestamp, datetime, text, decimal } from "drizzle-orm/mysql-core";
+import { pgTable, serial, varchar, integer, timestamp, text, decimal } from "drizzle-orm/pg-core";
 
 
-export const users = mysqlTable('users', {
-    id: varchar("id", { length: 255 }).primaryKey(),
+export const users = pgTable('users', {
+    id: varchar("id", { length: 255 }).primaryKey().unique(),
     email: varchar('email', { length: 256 }).unique().notNull(),
     passwordHash: varchar('password_hash', { length: 256 }).notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
-export const products = mysqlTable('products', {
-    id: int("id").autoincrement().primaryKey(),
+export const products = pgTable('products', {
+    id: serial("id").primaryKey(),
     title: varchar('title', { length: 256 }).notNull(),
     imageUrl: varchar('image_url', { length: 256 }).notNull(),
-    price: int('price').notNull(),
+    price: integer('price').notNull(),
     description: text('description').notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -20,35 +20,41 @@ export const products = mysqlTable('products', {
 
 export type ProductsSchemaType = typeof products.$inferSelect
 
-export const user_cart = mysqlTable('user_cart', {
-    id: int('id').primaryKey().autoincrement(),
+export const user_cart = pgTable('user_cart', {
+    id: serial('id').primaryKey(),
     userId: varchar("user_id", { length: 255 }).notNull().references(() => users.id),
-    productId: int('product_id').notNull().references(() => products.id, { onDelete: 'cascade' }),
-    quantity: int('quantity'),
+    productId: integer('product_id').notNull().references(() => products.id, { onDelete: 'cascade' }),
+    quantity: integer('quantity'),
     createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
 // //:::::: Customer orders ::::::
 
-export const customer_orders = mysqlTable('customer_orders', {
-    id: varchar('id', { length: 255 }).primaryKey(),
-    userId:varchar("user_id", { length: 255 }).notNull().references(() => users.id),
+export const customer_orders = pgTable('customer_orders', {
+    id: varchar('id', { length: 255 }).primaryKey().unique(),
+    userId: varchar("user_id", { length: 255 }).notNull().references(() => users.id).unique(),
     status: varchar('status', { length: 50, enum: ['pending', 'paid', 'cancelled'] }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
-export const order_items = mysqlTable('order_items', {
+export const order_items = pgTable('order_items', {
     order_id: varchar('order_id', { length: 255 }).references(() => customer_orders.id),
-    products_id: int('product_id').references(() => products.id, { onDelete: 'cascade' }),
-    quantity: int('quantity'),
+    products_id: integer('product_id').references(() => products.id, { onDelete: 'cascade' }),
+    quantity: integer('quantity'),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    orderUserId: varchar('order_user_id', {length: 255}).notNull().references(() => customer_orders.userId),
+    // orderUserId: varchar('order_user_id', { length: 255 }).notNull().references(() => customer_orders.userId),
+    orderUserId: varchar('user_id', { length: 255 }).notNull().references(() => users.id),
 })
 
-export const sessions = mysqlTable('sessions', {
-    id: varchar("id", { length: 255 }).primaryKey(),
-    userId: varchar("user_id", { length: 255 }).notNull().references(() => users.id),
-    expiresAt: datetime("expires_at").notNull()
+export const sessions = pgTable('sessions', {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => users.id),
+    expiresAt: timestamp("expires_at", {
+        withTimezone: true,
+        mode: "date"
+    }).notNull()
 })
 
 // //:::::: Customer cart ::::::

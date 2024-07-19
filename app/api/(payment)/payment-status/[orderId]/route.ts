@@ -19,6 +19,6 @@ export async function GET(req: NextRequest, { params }: {
         await db.delete(user_cart).where(eq(user_cart.userId, user?.id as any))
     }
 
-    redirect('/')
+    redirect('/profile/orders')
 
 }

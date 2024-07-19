@@ -40,7 +40,7 @@ export async function signup(_: ActionResult, formData: FormData): Promise<Actio
     }
     _.error.password = '' //reset state
 
-
+    
 
     const hashedPassword = await hashPassword(password)
 

@@ -55,7 +55,7 @@ export default async function PaymentForm({ totalPrice }: Props) {
             await db.insert(order_items).values({
               products_id: cart.productId,
               order_id: generatedOrderId,
-              quantity: cart.productId,
+              quantity: cart.quantity,
               orderUserId: user.id,
             })
           })

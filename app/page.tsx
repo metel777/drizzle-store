@@ -30,6 +30,7 @@ export default async function HomeShop({
     .limit(5)
     .offset(5 * (page - 1))
 
+
   return (
     <main className="relative">
       <H1>Shop</H1>

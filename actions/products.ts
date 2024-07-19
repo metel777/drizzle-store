@@ -41,16 +41,27 @@ export async function deleteProduct(id: any) {
     await db.delete(products).where(eq(products.id, id))
 }
 
-export async function getTotalPrice() {
+interface TotalPrice {
+    totalPrice: Number
+}
+
+export async function getTotalPrice(){
 
     const { user } = await verifyAuthSession()
-    const res = await db.execute(sql`
-        SELECT SUM(${products.price} * ${user_cart.quantity}) AS total_price
-        FROM ${user_cart} 
-        JOIN ${products} ON ${user_cart.productId} = ${products.id}
-        WHERE ${user_cart.userId} = ${user?.id};
-        `)
-    return res[0]
+    try {
+        const res = await db.execute(sql`
+            SELECT SUM(${products.price} * ${user_cart.quantity}) AS total_price
+            FROM ${user_cart} 
+            JOIN ${products} ON ${user_cart.productId} = ${products.id}
+            WHERE ${user_cart.userId} = ${user?.id};
+            `)
+            // console.log(res.rows)
+        return res.rows
+        
+    } catch (error) {
+        console.log(error)
+    }
+    
 
 }
 
