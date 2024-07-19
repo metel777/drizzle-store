@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	experimental: {
-		serverComponentsExternalPackages: ["@node-rs/argon2"]
-	}
+//   experimental: {
+//   	serverComponentsExternalPackages: ["@node-rs/argon2"]
+//   }
+  experimental: {
+    outputFileTracingIncludes: {
+      "/": ["./node_modules/argon2/prebuilds/linux-x64/*.musl.*"],
+    },
+  },
 }
 
 export default nextConfig
