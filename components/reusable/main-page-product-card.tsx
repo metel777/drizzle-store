@@ -35,12 +35,12 @@ export default async function ProductCard({
               <Link href={`/admin/edit-product/${id}`}>
                 <Button variant="outline">Edit</Button>
               </Link>
-              <form action="/api/delete-product" method="POST">
+              {/* <form action="/api/delete-product" method="POST">
                 <Button type="submit" variant="destructive">
                   Delete
                 </Button>
                 <input type="hidden" value={id} name="productId" />
-              </form>
+              </form> */}
             </main>
           ) : (
             <section className="flex justify-between">

@@ -16,7 +16,7 @@ type Props = { children: React.ReactNode }
 export default async function ProfilePage({ children }: Props) {
   const { user } = await verifyAuthSession()
   if (!user) {
-    redirect("/auth/singin")
+    redirect("/auth/signin")
   }
   return (
     <main className="flex flex-col items-center md:items-start md:flex-row ">
@@ -29,31 +29,31 @@ export default async function ProfilePage({ children }: Props) {
                 Your orders
               </ListItem>
             </Link>
-            <ListItem>
+            {/* <ListItem>
               <FavouritesIcon />
               Favourites
-            </ListItem>
+            </ListItem> */}
           </NavSection>
           <hr className="hidden md:block" />
           <NavSection name="Profile settings">
-            <ListItem>
+            {/* <ListItem>
               <ChangeIcon />
               Change credentials
-            </ListItem>
+            </ListItem> */}
             <Link href="/profile/change-password">
               <ListItem>
                 <ChangePasswordIcon />
                 Change password
               </ListItem>
             </Link>
-            <ListItem>
+            {/* <ListItem>
               <ChangeShippingIcon />
               Change shipping adress
             </ListItem>
             <ListItem>
               <ChangePaymentIcon />
               Change payment method
-            </ListItem>
+            </ListItem> */}
           </NavSection>
         </nav>
       </main>

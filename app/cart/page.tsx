@@ -6,7 +6,7 @@ import PaymentForm from "./payment-form"
 
 export default async function CartPage() {
   const res = await getCart()
-  const res2: any = await getTotalPrice()
+  const res2 = (await getTotalPrice()) as [any]
   const totalPrice = Number(res2[0].total_price)
 
   return (
@@ -38,11 +38,28 @@ export default async function CartPage() {
           : "There is no items in the cart."}
       </section>
       <hr className="my-5 border-stroke-strong" />
-      <section className="text-center">
+      
+      {totalPrice ? <section className="text-center">
+
         <H1>Total price: $ {totalPrice}</H1>
         <PaymentForm totalPrice={totalPrice} />
-        Cart: <code>4000000000003055</code>
-      </section>
+        <div className=" mx-auto w-[200px] mt-2">
+          <span className="text-red-500">Payment instruction:</span>
+          <ol className="list-decimal w-fit text-left list-inside">
+            <li>
+              <span className="">Card for payment:</span>{" "}
+              <code className="text-xl bg-fill border p-0.5 rounded-md">
+                4000000000003055
+              </code>
+            </li>
+            <li>
+              Card expiration date should be at least one day further than the
+              current date.
+            </li>
+            <li>At order page type any CVV code and any name.</li>
+          </ol>
+        </div>
+      </section> : ''}
     </main>
   )
 }
