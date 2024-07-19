@@ -1,10 +1,20 @@
 import { addToCart } from "@/actions/cart"
 import { verifyAuthSession } from "@/lib/auth"
 import SubmitBtnWithToast from "./submit-btn-toast"
+import { Button } from "../ui/button"
+import Link from "next/link"
 
 type Props = { productId: number }
 export default async function AddToCartBtn({ productId }: Props) {
-  const { user } = await verifyAuthSession() as any
+  const { user } = (await verifyAuthSession()) as any
+
+  if (!user) {
+    return (
+      <Link href="/auth/signup">
+        <Button>Add to cart</Button>
+      </Link>
+    )
+  }
 
   return (
     <form

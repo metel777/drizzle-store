@@ -3,11 +3,19 @@ import { getTotalPrice } from "@/actions/products"
 import { H1 } from "@/components/reusable/titles"
 import { Button } from "@/components/ui/button"
 import PaymentForm from "./payment-form"
+import { verifyAuthSession } from "@/lib/auth"
+import { redirect } from "next/navigation"
 
 export default async function CartPage() {
   const res = await getCart()
   const res2 = (await getTotalPrice()) as [any]
   const totalPrice = Number(res2[0].total_price)
+
+  const {user} = await verifyAuthSession()
+
+  if(!user) {
+    redirect('/auth/signup')
+  }
 
   return (
     <main>

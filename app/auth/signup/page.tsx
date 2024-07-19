@@ -7,6 +7,7 @@ import Link from "next/link"
 import { signup } from "@/actions/auth"
 import { Label } from "@/components/ui/label"
 import { useFormState } from "react-dom"
+import AuthBtn from "@/components/reusable/auth-btn"
 const initialState = {
   error: {
     email: "",
@@ -46,7 +47,8 @@ export default function SignUp() {
           <Input
             className={`${
               state.error.password !==
-                "Password must be at least 8 characters long." && state.error.password  &&
+                "Password must be at least 8 characters long." &&
+              state.error.password &&
               "border-red-500"
             }`}
             placeholder="Confirm password"
@@ -58,9 +60,7 @@ export default function SignUp() {
           {state.error.password && (
             <p className="text-sm text-red-500">{state.error.password}</p>
           )}
-          <Button type="submit" className="mt-5">
-            Sign up
-          </Button>
+          <AuthBtn variant="signup" />
           <Link
             className="text-sm hover:underline text-neutral-500"
             href={"/auth/signin"}

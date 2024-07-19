@@ -7,6 +7,7 @@ import Link from "next/link"
 import { useFormState } from "react-dom"
 import { signin } from "@/actions/auth"
 import { Label } from "@/components/ui/label"
+import AuthBtn from "@/components/reusable/auth-btn"
 
 const initialState = {
   error: {
@@ -44,9 +45,7 @@ export default function SignIn() {
             <p className="text-sm text-red-500">{state.error.password}</p>
           )}
 
-          <Button type="submit" className="mt-5">
-            Sign In
-          </Button>
+          <AuthBtn variant="signin" />
           <Link
             className="text-sm hover:underline text-neutral-500"
             href="/auth/signup"
