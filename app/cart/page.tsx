@@ -7,15 +7,17 @@ import { verifyAuthSession } from "@/lib/auth"
 import { redirect } from "next/navigation"
 
 export default async function CartPage() {
+  const {user} = await verifyAuthSession()
+  if(!user) {
+    redirect('/auth/signup')
+  }
+
   const res = await getCart()
   const res2 = (await getTotalPrice()) as [any]
   const totalPrice = Number(res2[0].total_price)
 
-  const {user} = await verifyAuthSession()
 
-  if(!user) {
-    redirect('/auth/signup')
-  }
+  
 
   return (
     <main>
